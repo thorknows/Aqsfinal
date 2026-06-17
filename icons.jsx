@@ -16,6 +16,7 @@ const I = {
   cog: (p) => <Icon {...p}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a7.97 7.97 0 0 0 0-6l2-1.5-2-3.5-2.4 1a8 8 0 0 0-5.2-3l-.4-2.5h-3l-.4 2.5a8 8 0 0 0-5.2 3l-2.4-1-2 3.5L1 9a7.97 7.97 0 0 0 0 6l-2 1.5"/></Icon>,
   arrowLeft: (p) => <Icon {...p}><path d="M19 12H5M11 18l-6-6 6-6"/></Icon>,
   arrowRight: (p) => <Icon {...p}><path d="M5 12h14M13 6l6 6-6 6"/></Icon>,
+  arrowDown: (p) => <Icon {...p}><path d="M12 5v14M6 13l6 6 6-6"/></Icon>,
   chevronDown: (p) => <Icon {...p}><path d="M6 9l6 6 6-6"/></Icon>,
   help: (p) => <Icon {...p}><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .5-1.5 1-1.5 2"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></Icon>,
   info: (p) => <Icon {...p} sw={1.4}><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r=".6" fill="currentColor"/></Icon>,

@@ -148,15 +148,7 @@
           case 'oversikt': return <OppdragOverviewScreen onOpenJob={openJob} user={user}/>;
           case 'flate': return <FlateScreen user={user}/>;
           case 'varsler': return <VarslerScreen/>;
-          case 'rapporter': return <GenericScreen
-            title={L('Rapporter', 'Reports')}
-            blurb={L('Genererte rapporter fra oppdrag, energiforbruk, sensorlogger og driftstid.', 'Generated reports from operations, fuel consumption, sensor logs and operating time.')}
-            items={[
-              { h: L('Driftsrapport mai 2026', 'Operations report May 2026'), p: L('Sammendrag av timer, transitt og bunkers.', 'Summary of hours, transit and bunkers.') },
-              { h: L('Energianalyse Q2', 'Energy analysis Q2'), p: L('Forbruk per nm fordelt på fartøy.', 'Consumption per nm by vessel.') },
-              { h: L('HMS-statistikk', 'HSE statistics'), p: L('Hendelser, øvelser og avvik.', 'Incidents, drills and deviations.') },
-            ]}
-          />;
+          case 'rapporter': return <ReportsScreen/>;
           case 'dokumenter': return <GenericScreen
             title={L('Dokumenter', 'Documents')}
             blurb={L('Sertifikater, klassedokumenter, prosedyrer og vedlikeholdsmanualer.', 'Certificates, class documents, procedures and maintenance manuals.')}
