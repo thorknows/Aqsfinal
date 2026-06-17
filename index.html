@@ -69,7 +69,7 @@
         <>
           <div className="page-head" data-screen-label={`02 ${job.type} – ${job.loc}`} style={{ padding: '24px 0 26px', marginLeft: 36, marginRight: 36 }}>
             <div>
-              <h2 style={{ fontSize: 36 }}>{tr(job.type)} – {job.loc}</h2>
+              <h1>{tr(job.type)} – {job.loc}</h1>
               <p>{job.customer} · {job.vessel} · <span style={{ fontFamily: 'var(--font-mono)' }}>{job.id}</span></p>
             </div>
             {tweaks.liveBadge && (

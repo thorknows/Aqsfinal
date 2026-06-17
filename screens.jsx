@@ -16,10 +16,10 @@ function OppdragScreen({ embedded }) {
     return true;
   });
   return (
-    <div style={{ padding: embedded ? '8px 32px 40px' : '8px 32px 40px' }}>
+    <div className="page-wrap">
       <div className="page-head" style={{ padding: '20px 0 16px' }}>
         <div>
-          <h2>{embedded ? 'Andre oppdrag' : 'Oppdrag'}</h2>
+          <h1>{embedded ? 'Andre oppdrag' : 'Oppdrag'}</h1>
           <p>{embedded ? 'Andre pågående og planlagte oppdrag i flåten.' : 'Oversikt over alle pågående og planlagte oppdrag i flåten.'}</p>
         </div>
         {!embedded && (
@@ -163,10 +163,10 @@ function FlateScreen({ user }) {
   const filters = ['Alle', 'Store fartøy', 'Servicekatamaran', 'Dykker/hurtiggående'];
 
   return (
-    <div style={{ padding: '8px 32px 40px' }} data-screen-label="Flåte">
+    <div className="page-wrap" data-screen-label="Flåte">
       <div className="page-head" style={{ padding: '20px 0 16px' }}>
         <div>
-          <h2>{L('Flåte', 'Fleet')}</h2>
+          <h1>{L('Flåte', 'Fleet')}</h1>
           <p>{isCustomer
             ? L('Se ledig kapasitet i AQS-flåten og send en bookingforespørsel.', 'See available capacity in the AQS fleet and send a booking request.')
             : L(`Sanntidsstatus og tilgjengelighet for ${FLEET.length} fartøyer i AQS-flåten.`, `Live status and availability for ${FLEET.length} vessels in the AQS fleet.`)}</p>
@@ -237,10 +237,10 @@ function VarslerScreen() {
   ];
   const sevColor = { high: 'var(--bad)', med: 'var(--warn)', low: 'var(--text-2)' };
   return (
-    <div style={{ padding: '8px 32px 40px' }}>
+    <div className="page-wrap">
       <div className="page-head" style={{ padding: '20px 0 16px' }}>
         <div>
-          <h2>Varsler</h2>
+          <h1>Varsler</h1>
           <p>3 aktive varsler krever oppmerksomhet.</p>
         </div>
       </div>
@@ -263,7 +263,7 @@ function VarslerScreen() {
 function GenericScreen({ title, blurb, items }) {
   return (
     <div className="placeholder">
-      <h2>{title}</h2>
+      <h1>{title}</h1>
       <p>{blurb}</p>
       <div className="stub-grid">
         {items.map((it, i) => (

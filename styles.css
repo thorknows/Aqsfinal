@@ -262,12 +262,15 @@ input:focus-visible,
   background: transparent;
   border: 0;
   color: var(--navy);
-  display: grid; place-items: center;
+  display: flex; place-items: center;
   width: 30px; height: 30px;
   border-radius: var(--r-sm);
 }
+.crumb .back svg {
+  flex: none;
+}
 .crumb .back:hover { background: rgba(0,37,70,0.07); }
-.crumb h1 {
+.crumb-title {
   margin: 0;
   font-size: 16px;
   font-weight: 500;
@@ -338,6 +341,22 @@ input:focus-visible,
   letter-spacing: 0.05em;
 }
 
+/* ---------- Section heading (oppdrag groups etc.) ---------- */
+.section-head {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+.page-wrap {
+  padding: 32px;
+}
+@media (max-width: 768px) {
+  .page-wrap {
+  padding: 24px 12px;
+}
+}
+
 /* ---------- Page header ---------- */
 .page-head {
   padding: 28px 32px 8px;
@@ -346,7 +365,7 @@ input:focus-visible,
   justify-content: space-between;
   gap: 24px;
 }
-.page-head h2 {
+.page-head h1 {
   margin: 0;
   font-size: 32px;
   font-weight: 700;
@@ -1016,7 +1035,7 @@ input:focus-visible,
   background: var(--bg-2);
   text-align: center;
 }
-.placeholder h2 { margin: 0; font-size: 22px; letter-spacing: 0.02em; }
+.placeholder h1 { margin: 0; font-size: 22px; letter-spacing: 0.02em; }
 .placeholder p { color: var(--text-2); max-width: 420px; margin: 10px auto 0; font-size: 13px; }
 .placeholder .stub-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
@@ -1221,12 +1240,12 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
   }
 
   .main { padding-bottom: 74px; }
-  .grid { grid-template-columns: 1fr; gap: 16px; padding: 16px; }
+  .grid { grid-template-columns: 1fr; gap: 16px !important; padding: 16px !important;}
   .col-4, .col-6, .col-8, .col-12 { grid-column: 1 / -1; }
 
   .topbar { padding-left: 16px; padding-right: 16px; }
   .page-head { padding-left: 0; padding-right: 0; }
-  .page-head h2 { font-size: 24px; }
+  .page-head h1 { font-size: 24px; }
 
   /* Overview tables: let wide tables scroll horizontally instead of crushing */
   .job-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1921,5 +1940,15 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
 
 @media (max-width: 600px) {
   .bk-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Phone headings (≤480px) ---------- */
+@media (max-width: 480px) {
+  .page-head { padding: 16px 16px 6px; gap: 12px; }
+  .page-head h1 { font-size: 20px; }
+  .section-head { font-size: 18px; margin-bottom: 14px; }
+  .page-head p { font-size: 14px; margin-top: 4px; }
+  .placeholder h1 { font-size: 18px; }
+  .modal-head h2 { font-size: 16px; }
 }
 

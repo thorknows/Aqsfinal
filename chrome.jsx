@@ -159,11 +159,11 @@ function Topbar({ title, onBack, user, onSwitchUser, onLogout, lang, onLang }) {
     <header className="topbar">
       <div className="crumb">
         {onBack && (
-          <button className="back" onClick={onBack} aria-label={L('Tilbake', 'Back')}>
+          <button className="back" onClick={onBack} aria-label={L('Tilbake til', 'Back to') + ' ' + title}>
             <I.arrowLeft size={20}/>
+            <span>{title}</span>
           </button>
         )}
-        <h1>{title}</h1>
       </div>
       <div className="spacer" />
       {onLang && <LangSwitch lang={lang} onLang={onLang} />}

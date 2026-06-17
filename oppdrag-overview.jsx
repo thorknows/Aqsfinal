@@ -245,10 +245,10 @@ function OppdragOverviewScreen({ onOpenJob, user }) {
     : L('Oversikt over alle oppdrag i AQS-flåten', 'Overview of all operations in the AQS fleet');
 
   return (
-    <div style={{ padding: '8px 36px 48px' }} data-screen-label="01 Oppdrag">
+    <div className="page-wrap" data-screen-label="01 Oppdrag">
       <div className="page-head" style={{ padding: '24px 0 26px' }}>
         <div>
-          <h2>{L('Oppdrag', 'Operations')}</h2>
+          <h1>{L('Oppdrag', 'Operations')}</h1>
           <p>{subtitle}</p>
         </div>
         {!customer && (
@@ -262,17 +262,17 @@ function OppdragOverviewScreen({ onOpenJob, user }) {
         <StatCard label={L('Fullførte oppdrag', 'Completed operations')} value={done.length}  color="var(--navy)"/>
       </div>
 
-      <h3 style={{ fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: '0 0 18px' }}>{L('Aktive oppdrag', 'Active operations')}</h3>
+      <h3 className="section-head">{L('Aktive oppdrag', 'Active operations')}</h3>
       {active.length
         ? <JobTable jobs={active} onOpenJob={onOpenJob} mobile={mobile}/>
         : <div className="empty-note">{L('Ingen aktive oppdrag akkurat nå.', 'No active operations right now.')}</div>}
 
       {upcoming.length > 0 && <>
-        <h3 style={{ fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: '0 0 18px' }}>{L('Planlagte oppdrag', 'Planned operations')}</h3>
+        <h3 className="section-head">{L('Planlagte oppdrag', 'Planned operations')}</h3>
         <JobTable jobs={upcoming} onOpenJob={onOpenJob} mobile={mobile}/>
       </>}
 
-      <h3 style={{ fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: '0 0 18px' }}>{L('Fullførte oppdrag', 'Completed operations')}</h3>
+      <h3 className="section-head">{L('Fullførte oppdrag', 'Completed operations')}</h3>
       {done.length
         ? <JobTable jobs={done} onOpenJob={onOpenJob} done mobile={mobile}/>
         : <div className="empty-note">{L('Ingen fullførte oppdrag ennå.', 'No completed operations yet.')}</div>}
