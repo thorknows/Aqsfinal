@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>AQS — Kontroll</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="i18n.jsx"></script>
+  <script type="text/babel" src="auth.jsx"></script>
+  <script type="text/babel" src="chrome.jsx"></script>
+  <script type="text/babel" src="live.jsx"></script>
+  <script type="text/babel" src="modals.jsx"></script>
+  <script type="text/babel" src="card-boat.jsx"></script>
+  <script type="text/babel" src="card-docs.jsx"></script>
+  <script type="text/babel" src="card-energy.jsx"></script>
+  <script type="text/babel" src="cards-rest.jsx"></script>
+  <script type="text/babel" src="screens.jsx"></script>
+  <script type="text/babel" src="fleet-timeline.jsx"></script>
+  <script type="text/babel" src="oppdrag-overview.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "primaryColor": "#6CB33F",
+      "accentMode": "gronn",
+      "density": "comfy",
+      "showLogPanel": true,
+      "showSeaqloud": true,
+      "showProgress": true,
+      "showDocs": true,
+      "liveBadge": false
+    }/*EDITMODE-END*/;
+
+    function applyPrimary(color) {
+      const root = document.documentElement;
+      root.style.setProperty('--primary', color);
+      // soft / line / glow derived
+      const hex = color.replace('#','');
+      const r = parseInt(hex.slice(0,2),16);
+      const g = parseInt(hex.slice(2,4),16);
+      const b = parseInt(hex.slice(4,6),16);
+      root.style.setProperty('--primary-soft', `rgba(${r},${g},${b},0.14)`);
+      root.style.setProperty('--primary-line', `rgba(${r},${g},${b},0.32)`);
+      root.style.setProperty('--primary-glow', `rgba(${r},${g},${b},0.45)`);
+      root.style.setProperty('--ok', color);
+    }
+
+    const ACCENT_PRESETS = {
+      gronn:  '#6CB33F',
+      bla:    '#008FD5',
+      morkbla:'#002546',
+    };
+
+    function JobDetailScreen({ job, tweaks }) {
+      const live = useLive();
+      const ts = live ? live.timeStr.slice(0,5) : '10:15';
+      return (
+        <>
+          <div className="page-head" data-screen-label={`02 ${job.type} – ${job.loc}`} style={{ padding: '24px 0 26px', marginLeft: 36, marginRight: 36 }}>
+            <div>
+              <h2 style={{ fontSize: 36 }}>{tr(job.type)} – {job.loc}</h2>
+              <p>{job.customer} · {job.vessel} · <span style={{ fontFamily: 'var(--font-mono)' }}>{job.id}</span></p>
+            </div>
+            {tweaks.liveBadge && (
+              <div className="head-meta">
+                <LivePill/>
+              </div>
+            )}
+          </div>
+          <div className="grid">
+            <BoatCard />
+            <EnergyCard />
+            <AisCard />
+            {tweaks.showLogPanel && <OpLogCard />}
+            {tweaks.showSeaqloud && <SeaqloudCard />}
+            {tweaks.showProgress && <ProgressCard />}
+            {tweaks.showDocs && <DocumentationCard />}
+          </div>
+        </>
+      );
+    }
+
+    const SCREEN_TITLES = {
+      oversikt: ['Oppdrag', 'Operations'],
+      flate: ['Flåte', 'Fleet'],
+      rapporter: ['Rapporter', 'Reports'],
+      varsler: ['Varsler', 'Alerts'],
+      dokumenter: ['Dokumenter', 'Documents'],
+      innstillinger: ['Innstillinger', 'Settings'],
+    };
+    const screenTitle = (id) => { const p = SCREEN_TITLES[id] || [id, id]; return L(p[0], p[1]); };
+
+    function App() {
+      const [user, setUser] = useState(() => loadUser());
+      const [lang, setLang] = useState(() => getLang());
+      const [loginEmail, setLoginEmail] = useState('');
+      const [active, setActive] = useState('oversikt');
+      const [activeJob, setActiveJob] = useState(null);
+      const [collapsed, setCollapsed] = useState(false);
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+      window.LANG = lang;
+      useEffect(() => { document.documentElement.lang = lang; }, [lang]);
+      const onLang = (l) => { persistLang(l); setLang(l); };
+
+      useEffect(() => { applyPrimary(t.primaryColor); }, [t.primaryColor]);
+      useEffect(() => {
+        document.documentElement.dataset.density = t.density;
+      }, [t.density]);
+
+      const onAccentMode = (mode) => {
+        setTweak({ accentMode: mode, primaryColor: ACCENT_PRESETS[mode] || t.primaryColor });
+      };
+
+      const onLogin = (u) => {
+        setUser(u); saveUser(u);
+        setActive('oversikt'); setActiveJob(null);
+      };
+      const onLogout = () => { setUser(null); saveUser(null); setLoginEmail(''); };
+      const onSwitchUser = () => { setUser(null); saveUser(null); setLoginEmail(''); };
+
+      const onNavigate = (id) => { setActive(id); setActiveJob(null); };
+      const openJob = (job) => setActiveJob(job);
+      const closeJob = () => setActiveJob(null);
+
+      if (!user) {
+        return <LoginScreen onLogin={onLogin} initialEmail={loginEmail} lang={lang} onLang={onLang}/>;
+      }
+
+      const navItems = navForRole(user.role);
+
+      const renderScreen = () => {
+        if (active === 'oversikt' && activeJob) {
+          return <JobDetailScreen job={activeJob} tweaks={t}/>;
+        }
+        switch (active) {
+          case 'oversikt': return <OppdragOverviewScreen onOpenJob={openJob} user={user}/>;
+          case 'flate': return <FlateScreen user={user}/>;
+          case 'varsler': return <VarslerScreen/>;
+          case 'rapporter': return <GenericScreen
+            title={L('Rapporter', 'Reports')}
+            blurb={L('Genererte rapporter fra oppdrag, energiforbruk, sensorlogger og driftstid.', 'Generated reports from operations, fuel consumption, sensor logs and operating time.')}
+            items={[
+              { h: L('Driftsrapport mai 2026', 'Operations report May 2026'), p: L('Sammendrag av timer, transitt og bunkers.', 'Summary of hours, transit and bunkers.') },
+              { h: L('Energianalyse Q2', 'Energy analysis Q2'), p: L('Forbruk per nm fordelt på fartøy.', 'Consumption per nm by vessel.') },
+              { h: L('HMS-statistikk', 'HSE statistics'), p: L('Hendelser, øvelser og avvik.', 'Incidents, drills and deviations.') },
+            ]}
+          />;
+          case 'dokumenter': return <GenericScreen
+            title={L('Dokumenter', 'Documents')}
+            blurb={L('Sertifikater, klassedokumenter, prosedyrer og vedlikeholdsmanualer.', 'Certificates, class documents, procedures and maintenance manuals.')}
+            items={[
+              { h: L('Klassesertifikat', 'Class certificate'), p: L('AQS Rørvik · gyldig til 2027', 'AQS Rørvik · valid until 2027') },
+              { h: L('ISM-håndbok', 'ISM manual'), p: L('Versjon 4.2', 'Version 4.2') },
+              { h: L('Vedlikeholdsplan', 'Maintenance plan'), p: 'Q2 2026' },
+            ]}
+          />;
+          case 'innstillinger': return <GenericScreen
+            title={L('Innstillinger', 'Settings')}
+            blurb={L('Konto, varsler, integrasjoner og brukerstyring.', 'Account, alerts, integrations and user management.')}
+            items={[
+              { h: L('Profil', 'Profile'), p: L('Navn, kontaktinfo, språk.', 'Name, contact info, language.') },
+              { h: L('Varsler', 'Alerts'), p: L('Velg hvilke hendelser som skal varsles.', 'Choose which events trigger alerts.') },
+              { h: L('Integrasjoner', 'Integrations'), p: L('Seaqloud, AIS-leverandør, ERP.', 'Seaqloud, AIS provider, ERP.') },
+            ]}
+          />;
+          default: return null;
+        }
+      };
+
+      return (
+        <LiveProvider>
+        <div className={`app ${collapsed ? 'collapsed' : ''}`}>
+          <Sidebar active={active} onNavigate={onNavigate} collapsed={collapsed} onToggleCollapse={()=>setCollapsed(c=>!c)} navItems={navItems}/>
+          <div className="main">
+            <Topbar
+              title={activeJob ? L('Oppdrag', 'Operations') : screenTitle(active)}
+              onBack={activeJob ? closeJob : undefined}
+              user={user}
+              onSwitchUser={onSwitchUser}
+              onLogout={onLogout}
+              lang={lang}
+              onLang={onLang}
+            />
+            {renderScreen()}
+          </div>
+          <TweaksPanel title="Tweaks">
+            <TweakSection label={L('Tema', 'Theme')}/>
+            <TweakRadio
+              label={L('Aksentfarge', 'Accent colour')}
+              value={t.accentMode}
+              options={[
+                { value: 'gronn',   label: L('Grønn', 'Green') },
+                { value: 'bla',     label: L('Blå', 'Blue') },
+                { value: 'morkbla', label: L('Mørk blå', 'Dark blue') },
+              ]}
+              onChange={onAccentMode}
+            />
+            <TweakColor
+              label={L('Egendefinert', 'Custom')}
+              value={t.primaryColor}
+              onChange={(v) => setTweak({ accentMode: 'custom', primaryColor: v })}
+            />
+            <TweakSection label={L('Layout', 'Layout')}/>
+            <TweakRadio
+              label={L('Tetthet', 'Density')}
+              value={t.density}
+              options={[
+                { value: 'compact', label: L('Kompakt', 'Compact') },
+                { value: 'regular', label: L('Vanlig', 'Regular') },
+                { value: 'comfy',   label: L('Luftig', 'Comfy') },
+              ]}
+              onChange={(v) => setTweak('density', v)}
+            />
+            <TweakSection label={L('Kort på Oversikt', 'Cards on overview')}/>
+            <TweakToggle label={L('Dokumentasjon', 'Documentation')}    value={t.showDocs}      onChange={(v) => setTweak('showDocs',      v)}/>
+            <TweakToggle label={L('OP-logg', 'OP log')}              value={t.showLogPanel}  onChange={(v) => setTweak('showLogPanel',  v)}/>
+            <TweakToggle label={L('Operasjonsfaser', 'Operation phases')}  value={t.showSeaqloud}  onChange={(v) => setTweak('showSeaqloud',  v)}/>
+            <TweakToggle label={L('Oppdragsprogresjon', 'Mission progress')} value={t.showProgress} onChange={(v) => setTweak('showProgress', v)}/>
+            <TweakToggle label={L('Live-merke', 'Live badge')}      value={t.liveBadge}     onChange={(v) => setTweak('liveBadge',     v)}/>
+          </TweaksPanel>
+        </div>
+        </LiveProvider>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
