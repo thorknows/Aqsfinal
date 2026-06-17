@@ -126,7 +126,7 @@ function LoginScreen({ onLogin, initialEmail, lang, onLang }) {
         </div>
 
         <div className="login-panel-wave" aria-hidden="true">
-          <img src="assets/login-wave.svg" alt=""/>
+          <img src="assets/login_bottom_gfx.svg" alt=""/>
         </div>
       </div>
 

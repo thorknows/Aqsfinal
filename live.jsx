@@ -2,12 +2,12 @@
 // OP-logg actions (Handling) carry a status: 'Utført' or 'Registrert'.
 
 const INITIAL_LOG = [
-  { time: '13:41', event: 'ROV slutt',            desc: 'Ferdig inspisert. Ingen avvik.', user: 'Per H.',  status: 'Utført' },
-  { time: '13:18', event: 'Fra lokalitet',        desc: 'ULØYBUKT',                        user: 'Per H.',  status: 'Utført' },
-  { time: '12:46', event: 'Oppsummering av punkt', desc: 'Fortøyningspunkt 4–6 OK',         user: 'Lars M.', status: 'Registrert' },
-  { time: '11:30', event: 'ROV start',            desc: 'Inspeksjon fortøyning',           user: 'Per H.',  status: 'Utført' },
-  { time: '09:15', event: 'Til lokalitet',        desc: 'ULØYBUKT',                        user: 'Ola N.',  status: 'Utført' },
-  { time: '07:30', event: 'Dag start',            desc: '',                                user: 'Ola N.',  status: 'Utført' },
+  { id: 1, time: '13:41', event: 'ROV slutt',            desc: 'Ferdig inspisert. Ingen avvik.', user: 'Per H.',  status: 'Utført' },
+  { id: 2, time: '13:18', event: 'Fra lokalitet',        desc: 'ULØYBUKT',                        user: 'Per H.',  status: 'Utført' },
+  { id: 3, time: '12:46', event: 'Oppsummering av punkt', desc: 'Fortøyningspunkt 4–6 OK',         user: 'Lars M.', status: 'Registrert' },
+  { id: 4, time: '11:30', event: 'ROV start',            desc: 'Inspeksjon fortøyning',           user: 'Per H.',  status: 'Utført' },
+  { id: 5, time: '09:15', event: 'Til lokalitet',        desc: 'ULØYBUKT',                        user: 'Ola N.',  status: 'Utført' },
+  { id: 6, time: '07:30', event: 'Dag start',            desc: '',                                user: 'Ola N.',  status: 'Utført' },
 ];
 
 const POOL_EVENTS = [
@@ -80,7 +80,7 @@ function LiveProvider({ children }) {
       setState(prev => {
         const now = new Date();
         const ev = POOL_EVENTS[Math.floor(Math.random() * POOL_EVENTS.length)];
-        const newRow = { time: `${pad(now.getHours())}:${pad(now.getMinutes())}`, ...ev };
+        const newRow = { id: now.getTime(), time: `${pad(now.getHours())}:${pad(now.getMinutes())}`, ...ev };
         return { ...prev, logRows: [newRow, ...prev.logRows].slice(0, 10), lastImage: now };
       });
     }, 18000);

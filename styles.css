@@ -54,10 +54,10 @@
   --bad: #C0392B;             /* red, AA on white */
   --ok: #4E8C2A;              /* success green text */
 
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 14px;
-  --r-xl: 20px;
+  --r-sm: 1px;
+  --r-md: 1px;
+  --r-lg: 1px;
+  --r-xl: 1px;
 
   --shadow-card: none;
   --card-line: #F3F3F4;       /* subtle card hairline (243,243,244) */
@@ -94,7 +94,7 @@ input:focus-visible,
 .nav-item:focus-visible,
 .tab-btn:focus-visible,
 .job-row.clickable:focus-visible,
-.card-foot-link:focus-visible,
+.panel-btn:focus-visible,
 .icon-btn:focus-visible,
 .row-link:focus-visible {
   outline: 3px solid var(--blue);
@@ -119,7 +119,7 @@ input:focus-visible,
   grid-template-columns: 248px 1fr;
   min-height: 100vh;
 }
-.app.collapsed { grid-template-columns: 76px 1fr; }
+.app.collapsed { grid-template-columns: 88px 1fr; }
 
 /* ---------- Sidebar ---------- */
 .sidebar {
@@ -163,7 +163,7 @@ input:focus-visible,
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 13px 14px;
+  padding: 16px;
   border-radius: var(--r-md);
   color: #1a1a1a;
   font-size: 15px;
@@ -204,6 +204,11 @@ input:focus-visible,
 .app.collapsed .sidebar-brand .sub { display: none; }
 .app.collapsed .sidebar-brand { align-items: center; }
 
+.app.collapsed .nav-item {
+  flex-direction: column;
+  width: 54px;
+}
+
 /* decorative white wave near the bottom of the green rail */
 .sidebar-wave {
   margin-top: auto;
@@ -211,7 +216,7 @@ input:focus-visible,
   height: 120px;
   flex: 0 0 auto;
 }
-.sidebar-wave svg { position: absolute; left: -18px; right: -18px; bottom: 0; width: calc(100% + 36px); display: block; }
+.sidebar-wave img { position: absolute; left: -18px; right: -18px; bottom: 0; width: calc(100% + 36px); display: block; }
 
 .sidebar-footer {
   padding-top: 8px;
@@ -447,7 +452,7 @@ input:focus-visible,
   white-space: nowrap;
 }
 
-.card-foot-link {
+.panel-btn {
   margin-top: 18px;
   align-self: flex-start;
   display: inline-flex;
@@ -465,8 +470,8 @@ input:focus-visible,
   cursor: pointer;
   transition: background 120ms ease, border-color 120ms ease;
 }
-.card-foot-link svg { color: #252627; flex: 0 0 auto; }
-.card-foot-link:hover { background: #DCEFD6; border-color: var(--green-strong); }
+.panel-btn svg { color: #252627; flex: 0 0 auto; }
+.panel-btn:hover { background: #DCEFD6; border-color: var(--green-strong); }
 
 /* ---------- Boat certifications ---------- */
 .boat-certs { margin-top: 18px; }
@@ -479,19 +484,19 @@ input:focus-visible,
 /* ---------- Tag (shared: certifications + OP-logg status) ---------- */
 .tag {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 10px; border-radius: 5px;
+  padding: 4px 10px; border-radius: 1px;
   background: rgba(0, 143, 213, 0.10);
-  border: 1px solid var(--blue);
+  border: 1px solid rgba(0,0,0,0.05);
   color: #0A618C;
   font-size: 12.5px; font-weight: 600; letter-spacing: 0.01em;
   white-space: nowrap;
 }
 .tag svg { color: var(--blue); flex: 0 0 auto; }
-.tag.tag-warn { background: rgba(217, 138, 0, 0.12); border-color: #C77E00; color: #8A5200; }
+.tag.tag-warn { background: rgba(217, 138, 0, 0.12); color: #8A5200; }
 .tag.tag-warn svg { color: #C77E00; }
-.tag.tag-bad { background: rgba(199, 56, 56, 0.10); border-color: #C73838; color: #97282A; }
+.tag.tag-bad { background: rgba(199, 56, 56, 0.10); color: #97282A; }
 .tag.tag-bad svg { color: #C73838; }
-.tag.tag-muted { background: var(--surface-2); border-color: var(--card-line); color: var(--text-2); }
+.tag.tag-muted { background: var(--surface-2); color: var(--text-2); }
 .tag.tag-muted svg { color: var(--text-3); }
 
 /* ---------- Documentation pane ---------- */
@@ -605,7 +610,7 @@ input:focus-visible,
 .boat-actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px; }
 .panel-btn {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 12px;
+  padding: 12px 16px;
   border: 1px solid #6CB33F;
   background: #E8F5E7;
   color: #252627;
@@ -719,7 +724,7 @@ input:focus-visible,
   background: transparent;
   border: 0;
   padding: 7px 14px;
-  border-radius: 7px;
+  border-radius: var(--r-sm);
   font-size: 12px;
   color: var(--text-2);
   letter-spacing: 0.04em;
@@ -1139,9 +1144,9 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
   .col-8 { grid-column: span 12; }
 }
 @media (max-width: 900px) and (min-width: 769px) {
-  .app { grid-template-columns: 76px 1fr; }
+  .app { grid-template-columns: 88px 1fr; }
+  .app .sidebar .nav-item .label { display: none; }
   .col-4, .col-6, .col-8 { grid-column: span 12; }
-  .nav-item .label, .sidebar-brand .sub { display: none; }
   .grid, .topbar, .page-head { padding-left: 18px; padding-right: 18px; }
 }
 
@@ -1251,6 +1256,7 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
   padding: 40px 40px 0;
   border-right: 1px solid rgb(188,189,190);
   overflow: hidden;
+  gap: 24px;
 }
 .login-panel-inner {
   position: relative;
@@ -1374,7 +1380,6 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
   position: absolute;
   bottom: 0; left: 0;
   width: 100%;
-  height: 120px;
   color: var(--green);
 }
 
@@ -1387,6 +1392,9 @@ html[data-density="comfy"] .card-head { margin-bottom: 22px; }
   .login-photo {
     grid-row: 1;
     min-height: 32vh;
+  }
+  .login-photo {
+    display: none;
   }
   .login-panel {
     grid-row: 2;

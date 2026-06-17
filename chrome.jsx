@@ -42,9 +42,7 @@ function Sidebar({ active, onNavigate, collapsed, onToggleCollapse, navItems }) 
         })}
       </nav>
       <div className="sidebar-wave" aria-hidden="true">
-        <svg viewBox="0 0 260 120" preserveAspectRatio="none">
-          <path d="M0 120 L0 80 Q 65 40, 130 50 T 260 60 L260 120 Z" fill="#ffffff"/>
-        </svg>
+        <img src="assets/sidebar_gfx.svg" alt=""/>
       </div>
       <div className="sidebar-footer">
         <button className="collapse-btn" onClick={onToggleCollapse}>

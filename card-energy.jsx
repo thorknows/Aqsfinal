@@ -125,7 +125,7 @@ function EnergyCard() {
       <div className="chart-axis">
         {d.axis.map(l => <span key={l}>{trDate(l)}</span>)}
       </div>
-      <button className="card-foot-link" onClick={() => setOpen(true)}>
+      <button className="panel-btn" onClick={() => setOpen(true)}>
         <I.info size={16}/>
         <span>{L('Se detaljer om drivstofforbruk', 'See fuel consumption details')}</span>
       </button>

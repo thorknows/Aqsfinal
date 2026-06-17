@@ -87,7 +87,7 @@ function AisCard() {
       </div>
       <EngineRow label={L('Babord', 'Port')}   rpm={eng.portRpm} coolant={eng.portCoolant} load={eng.portLoad}/>
       <EngineRow label={L('Styrbord', 'Starboard')} rpm={eng.stbdRpm} coolant={eng.stbdCoolant} load={eng.stbdLoad}/>
-      <button className="card-foot-link" onClick={() => setOpen(true)}>
+      <button className="panel-btn" onClick={() => setOpen(true)}>
         <I.info size={16}/>
         <span>{L('Gå til Marfle', 'Go to Marfle')}</span>
       </button>
@@ -117,7 +117,7 @@ function OpLogCard() {
         {rows.map((r, i) => {
           const done = r.status === 'Utført';
           return (
-            <div key={r.time + r.event} style={{
+            <div key={r.id} style={{
               display: 'grid', gridTemplateColumns: '58px 1fr auto', gap: 12, alignItems: 'center',
               padding: '12px 2px', borderBottom: i === rows.length - 1 ? 0 : '1px solid var(--line)',
               animation: i === 0 ? 'rowIn 600ms ease-out' : undefined,
@@ -193,7 +193,7 @@ function SeaqloudCard() {
           </div>
         ))}
       </div>
-      <button className="card-foot-link">
+      <button className="panel-btn">
         <I.info size={16}/>
         <span>{L('Gå til Marfle-rapport', 'Go to Marfle report')}</span>
       </button>
